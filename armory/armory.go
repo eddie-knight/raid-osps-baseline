@@ -16,7 +16,7 @@ var (
 				DO_02,
 				DO_04,
 				DO_05,
-				DO_06,
+				BR_06,
 			},
 			"maturity_1": {
 				AC_01,

@@ -2,6 +2,7 @@ package armory
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
@@ -31,7 +32,7 @@ type RepoData struct {
 			RefUpdateRule struct {
 				AllowsDeletions              bool
 				AllowsForcePushes            bool
-				RequiredApprovingReviewCount bool
+				RequiredApprovingReviewCount int
 			}
 		}
 		Releases struct {
@@ -85,7 +86,7 @@ func GetData() RepoData {
 
 	err := client.Query(context.Background(), &GlobalData, variables)
 	if err != nil {
-		Logger.Error("Error querying GitHub GraphQL API: ", err)
+		Logger.Error(fmt.Sprintf("Error querying GitHub GraphQL API: %s", err.Error()))
 	}
 	return GlobalData
 }

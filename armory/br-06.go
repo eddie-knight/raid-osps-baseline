@@ -1,6 +1,7 @@
 package armory
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/privateerproj/privateer-sdk/raidengine"
@@ -17,40 +18,35 @@ func BR_06() (strikeName string, result raidengine.StrikeResult) {
 	}
 
 	result.ExecuteMovement(BR_06_T01)
-	if result.Movements["BR_06_T01"].Value == "Releases Found" {
+	if !strings.Contains(result.Movements["BR_06_T01"].Message, ": 0") {
+		Logger.Trace("Releases Found, checking for Change Log")
 		result.ExecuteMovement(BR_06_T02)
 	}
 	return
 }
 
 func BR_06_T01() (moveResult raidengine.MovementResult) {
+	releaseCount := GetData().Repository.Releases.TotalCount
+
 	moveResult = raidengine.MovementResult{
 		Description: "Checking whether project has releases, passing if no releases are present",
 		Function:    utils.CallerPath(0),
+		Passed:      true,
+		Message:     fmt.Sprintf("Releases Found: %v", releaseCount),
 	}
-
-	data := GetData()
-
-	if data.Repository.Releases.TotalCount > 0 {
-		moveResult.Value = "Releases Found"
-	} else {
-		moveResult.Passed = true
-		moveResult.Value = "Releases Not Found"
-	}
-	// TODO: Use this section to write a single step or test that contributes to DO_01
 	return
 }
 
 func BR_06_T02() (moveResult raidengine.MovementResult) {
+	releaseDescription := GetData().Repository.LatestRelease.Description
+	contains := (strings.Contains(releaseDescription, "Change Log") || strings.Contains(releaseDescription, "Changelog"))
+
 	moveResult = raidengine.MovementResult{
 		Description: "Checking whether project has releases, passing if no releases are present",
 		Function:    utils.CallerPath(0),
+		Passed:      contains,
+		Message:     fmt.Sprintf("Change Log Found in Latest Release: %v", contains),
 	}
 
-	releaseDescription := GetData().Repository.LatestRelease.Description
-
-	if strings.Contains(releaseDescription, "Change Log") || strings.Contains(releaseDescription, "Changelog") {
-		moveResult.Passed = true
-	}
 	return
 }

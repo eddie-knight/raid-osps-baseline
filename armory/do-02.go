@@ -2,7 +2,6 @@ package armory
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/privateerproj/privateer-sdk/raidengine"
 	"github.com/privateerproj/privateer-sdk/utils"
@@ -25,7 +24,7 @@ func DO_02() (strikeName string, result raidengine.StrikeResult) {
 func DO_02_T01() raidengine.MovementResult {
 
 	body := GetData().Repository.ContributingGuidelines.Body
-	containsGuidelines := strings.Contains(body, "Contributing")
+	containsGuidelines := len(body) > 100
 
 	return raidengine.MovementResult{
 		Description: "Discover whether the GitHub repo's recommended contributing guidelines has content.",

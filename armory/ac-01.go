@@ -1,6 +1,8 @@
 package armory
 
 import (
+	"fmt"
+
 	"github.com/privateerproj/privateer-sdk/raidengine"
 	"github.com/privateerproj/privateer-sdk/utils"
 )
@@ -20,12 +22,13 @@ func AC_01() (strikeName string, result raidengine.StrikeResult) {
 }
 
 // TODO
-func AC_01_T01() (moveResult raidengine.MovementResult) {
-	moveResult = raidengine.MovementResult{
-		Description: "This movement is still under construction",
-		Function:    utils.CallerPath(0),
-	}
+func AC_01_T01() raidengine.MovementResult {
+	required := GetData().Organization.RequiresTwoFactorAuthentication
 
-	// TODO: Use this section to write a single step or test that contributes to AC_01
-	return
+	return raidengine.MovementResult{
+		Description: "Inspect the repo's parent to ensure that all members are required to use MFA",
+		Function:    utils.CallerPath(0),
+		Passed:      required,
+		Message:     fmt.Sprintf("MFA Required: %v", required),
+	}
 }

@@ -17,7 +17,7 @@ func BR_06() (strikeName string, result raidengine.StrikeResult) {
 	}
 
 	result.ExecuteMovement(BR_06_T01)
-	if result.Movements["BR_06_T01"].Value == "Releases Found" {
+	if result.Movements["BR_06_T01"].Message == "Releases Found" {
 		result.ExecuteMovement(BR_06_T02)
 	}
 	return
@@ -32,10 +32,10 @@ func BR_06_T01() (moveResult raidengine.MovementResult) {
 	data := GetData()
 
 	if data.Repository.Releases.TotalCount > 0 {
-		moveResult.Value = "Releases Found"
+		moveResult.Message = "Releases Found"
 	} else {
 		moveResult.Passed = true
-		moveResult.Value = "Releases Not Found"
+		moveResult.Message = "Releases Not Found"
 	}
 	// TODO: Use this section to write a single step or test that contributes to DO_01
 	return
@@ -51,6 +51,7 @@ func BR_06_T02() (moveResult raidengine.MovementResult) {
 
 	if strings.Contains(releaseDescription, "Change Log") || strings.Contains(releaseDescription, "Changelog") {
 		moveResult.Passed = true
+		moveResult.Message = "Change Log Found in Latest Release"
 	}
 	return
 }

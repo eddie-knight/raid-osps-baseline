@@ -2,6 +2,7 @@ package armory
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
@@ -11,15 +12,9 @@ var Authenticated bool
 
 type RepoData struct {
 	// Need to update token for this
-	// Organization struct {
-	// 	Rulesets struct {
-	// 		Nodes []struct {
-	// 			BypassActors struct {
-	// 				TotalCount int
-	// 			}
-	// 		}
-	// 	} `graphql:"rulesets(first: 10)"`
-	// } `graphql:"organization(login: $owner)"`
+	Organization struct {
+		RequiresTwoFactorAuthentication bool
+	} `graphql:"organization(login: $owner)"`
 
 	Repository struct {
 		Name                    string
@@ -31,7 +26,7 @@ type RepoData struct {
 			RefUpdateRule struct {
 				AllowsDeletions              bool
 				AllowsForcePushes            bool
-				RequiredApprovingReviewCount bool
+				RequiredApprovingReviewCount int
 			}
 		}
 		Releases struct {
@@ -85,7 +80,7 @@ func GetData() RepoData {
 
 	err := client.Query(context.Background(), &GlobalData, variables)
 	if err != nil {
-		Logger.Error("Error querying GitHub GraphQL API: ", err)
+		Logger.Error(fmt.Sprintf("Error querying GitHub GraphQL API: %s", err.Error()))
 	}
 	return GlobalData
 }

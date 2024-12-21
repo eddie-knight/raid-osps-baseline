@@ -8,9 +8,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-var Authenticated bool
-
-type RepoData struct {
+type GraphqlData struct {
 	// Need to update token for this
 	Organization struct {
 		RequiresTwoFactorAuthentication bool
@@ -58,14 +56,7 @@ type RepoData struct {
 	} `graphql:"repository(owner: $owner, name: $name)"`
 }
 
-var GlobalData RepoData
-
-func GetData() RepoData {
-	if GlobalData.Repository.Name != "" {
-		return GlobalData
-	}
-	owner := GlobalConfig.GetString("owner")
-	repo := GlobalConfig.GetString("repo")
+func (r *ArmoryData) loadGraphQLData() error {
 	src := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: GlobalConfig.GetString("token")},
 	)
@@ -74,13 +65,13 @@ func GetData() RepoData {
 	client := githubv4.NewClient(httpClient)
 
 	variables := map[string]interface{}{
-		"owner": githubv4.String(owner),
-		"name":  githubv4.String(repo),
+		"owner": githubv4.String(GlobalConfig.GetString("owner")),
+		"name":  githubv4.String(GlobalConfig.GetString("repo")),
 	}
 
-	err := client.Query(context.Background(), &GlobalData, variables)
+	err := client.Query(context.Background(), &Data.graphql, variables)
 	if err != nil {
 		Logger.Error(fmt.Sprintf("Error querying GitHub GraphQL API: %s", err.Error()))
 	}
-	return GlobalData
+	return nil
 }

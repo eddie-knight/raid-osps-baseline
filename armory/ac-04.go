@@ -20,8 +20,8 @@ func AC_04() (string, raidengine.StrikeResult) {
 }
 
 func AC_04_T01() raidengine.MovementResult {
-	allowed := GetData().Repository.DefaultBranchRef.RefUpdateRule.AllowsDeletions
-	branchName := GetData().Repository.DefaultBranchRef.Name
+	allowed := Data.GraphQL().Repository.DefaultBranchRef.RefUpdateRule.AllowsDeletions
+	branchName := Data.GraphQL().Repository.DefaultBranchRef.Name
 
 	message := fmt.Sprintf("Branch Protection Prevents Deletion: %v", !allowed)
 	// TODO: check rules as well

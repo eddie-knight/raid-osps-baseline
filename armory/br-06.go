@@ -24,7 +24,7 @@ func BR_06() (string, raidengine.StrikeResult) {
 }
 
 func BR_06_T01() raidengine.MovementResult {
-	releaseCount := GetData().Repository.Releases.TotalCount
+	releaseCount := Data.GraphQL().Repository.Releases.TotalCount
 
 	return raidengine.MovementResult{
 		Description: "Checking whether project has releases, passing if no releases are present",
@@ -35,7 +35,7 @@ func BR_06_T01() raidengine.MovementResult {
 }
 
 func BR_06_T02() raidengine.MovementResult {
-	releaseDescription := GetData().Repository.LatestRelease.Description
+	releaseDescription := Data.GraphQL().Repository.LatestRelease.Description
 	contains := (strings.Contains(releaseDescription, "Change Log") || strings.Contains(releaseDescription, "Changelog"))
 
 	moveResult := raidengine.MovementResult{

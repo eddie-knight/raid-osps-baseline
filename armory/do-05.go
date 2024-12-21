@@ -20,7 +20,7 @@ func DO_05() (string, raidengine.StrikeResult) {
 }
 
 func DO_05_T01() raidengine.MovementResult {
-	enabled := GetData().Repository.HasIssuesEnabled
+	enabled := Data.GraphQL().Repository.HasIssuesEnabled
 	moveResult := raidengine.MovementResult{
 		Description: "Checking to see whether the GitHub repo has issues enabled",
 		Function:    utils.CallerPath(0),

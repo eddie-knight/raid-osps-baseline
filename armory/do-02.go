@@ -21,7 +21,7 @@ func DO_02() (string, raidengine.StrikeResult) {
 
 func DO_02_T01() raidengine.MovementResult {
 
-	body := GetData().Repository.ContributingGuidelines.Body
+	body := Data.GraphQL().Repository.ContributingGuidelines.Body
 	containsGuidelines := len(body) > 100
 
 	moveResult := raidengine.MovementResult{

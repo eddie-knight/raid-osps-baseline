@@ -19,7 +19,7 @@ func DO_01() (string, raidengine.StrikeResult) {
 
 // TODO
 func DO_01_T01() raidengine.MovementResult {
-	repoData := GetData().Repository
+	repoData := Data.GraphQL().Repository
 
 	var message string
 	if repoData.HasDiscussionsEnabled {

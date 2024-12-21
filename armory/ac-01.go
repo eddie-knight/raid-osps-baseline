@@ -21,7 +21,7 @@ func AC_01() (string, raidengine.StrikeResult) {
 
 // TODO
 func AC_01_T01() raidengine.MovementResult {
-	required := GetData().Organization.RequiresTwoFactorAuthentication
+	required := Data.GraphQL().Organization.RequiresTwoFactorAuthentication
 
 	moveResult := raidengine.MovementResult{
 		Description: "Inspect the repo's parent to ensure that all members are required to use MFA",
